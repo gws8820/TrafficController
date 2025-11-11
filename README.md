@@ -1,4 +1,4 @@
-# Traffic Controller System on Nexys A7 FPGA
+# Traffic Control System
 
 ## Project Overview
 
@@ -104,5 +104,6 @@ If you are using `apb_traffic_controller.v`, you will control the system by read
 Contributions to this project are welcome! If you have suggestions for improvements, bug fixes, or new features, please feel free to open an issue or submit a Pull Request.
 
 ## License
+
 
 See [LICENSE](LICENSE) for details
