@@ -2,11 +2,13 @@
 
 ## Project Overview
 
-This project implements a comprehensive traffic light control system on the Digilent Nexys A7 FPGA board using Verilog HDL. 
+This project implements a comprehensive traffic light control system on an FPGA board using Verilog HDL. 
 The system includes advanced features such as VIP priority signaling and a night mode with light sensor via SPI communication.
 There are two ways to control this system:
 - Using the physical switches and buttons on the FPGA board
 - A IP Block contains register map accessible via the AMBA APB bus protocol
+
+<img src="References/fpga-sample.png" alt="FPGA Implementation Sample">
 
 ## Demo Video
 
@@ -21,7 +23,7 @@ Check out our demonstration video on [this link](https://youtu.be/cJCa-mshHHc?si
   * Automatically enters and exits night mode based on external light sensor input.
   * Pedestrian signals are deactivated, and vehicle signal priority can dynamically adjust based on simulated traffic camera inputs.
 * **Control Interfaces:**
-  * Direct control using the physical switches and buttons available on the Nexys A7 board (`fpga_traffic_controller.v`).
+  * Direct control using the physical switches and buttons available on the FPGA board (`fpga_traffic_controller.v`).
   * Control via an AMBA APB bus interface, providing register-level access for configuration and status monitoring (`apb_traffic_controller.v`). This module is designed to be easily integrated as an IP core in larger systems.
       
 ## Traffic Signal Sequences
@@ -50,8 +52,8 @@ Check out our demonstration video on [this link](https://youtu.be/cJCa-mshHHc?si
 
 ## Requirements
 
-* Digilent Nexys A7 FPGA Board (XC7A100T or XC7A50T).
-* An external expansion board connected to the Pmod JA and JB connectors, designed to interface with traffic light LEDs and a light sensor. (Refer to `References/extend_board_pinmap.xlsx` and `References/extend_board_sch.png` for connection details).
+* FPGA Development Board (e.g., Xilinx Artix-7 series or equivalent).
+* An external expansion board connected to the board's GPIO/Pmod connectors, designed to interface with traffic light LEDs and a light sensor. (Refer to `References/extend_board_pinmap.xlsx` and `References/extend_board_sch.png` for connection details).
 * Xilinx Vivado Design Suite.
 * (If using the APB interface) A system integrating an APB master (e.g., a MicroBlaze softcore processor).
 
@@ -59,14 +61,14 @@ Check out our demonstration video on [this link](https://youtu.be/cJCa-mshHHc?si
 
 * `Constraints/`: Contains Xilinx Design Constraints (`.xdc`) files for FPGA pin assignments and timing constraints.
 * `IP/`: Includes the source files and packaging information (`component.xml`, `xgui/`) for the `apb_traffic_controller` IP core.
-* `References/`: Repository for external documentation and reference materials, such as the AMBA APB specification, ADC datasheet, Nexys A7 manual, pin maps, and the register map.
+* `References/`: Repository for external documentation and reference materials, such as the AMBA APB specification, ADC datasheet, board manuals, pin maps, and the register map.
 * `Sources/`: Contains the core Verilog HDL source files for the traffic logic, controllers, SPI master, and simulation testbenches.
 
 ## Getting Started
 
 1. Clone this repository to your local machine.
 2. Launch Xilinx Vivado Design Suite.
-3. Create a new Vivado project, selecting your specific Nexys A7 board variant (XC7A100T or XC7A50T) as the target FPGA device.
+3. Create a new Vivado project, selecting your specific FPGA device as the target.
 4. Add all `.v` files from the `Sources/` directory to your project sources.
 5. Add the appropriate `.xdc` file from the `Constraints/` directory to your project constraints, selecting the file that matches your board and desired control method (physical I/O or APB).
 6. **If you intend to use the APB interface:**
@@ -74,19 +76,17 @@ Check out our demonstration video on [this link](https://youtu.be/cJCa-mshHHc?si
    * In your Block Design or top-level HDL, instantiate the `apb_traffic_controller` IP core and connect its APB interface and external I/O ports to your system.
 7. Create a top-level module for your design, or set one of the provided modules (`fpga_traffic_controller.v` for physical I/O control, or your custom APB system top-level) as the top-level and connect it to the board's physical I/O or your internal APB system.
 8. Run Synthesis, Implementation, and generate the Bitstream.
-9. Use the Vivado Hardware Manager to download the generated Bitstream file to your Nexys A7 board.
+9. Use the Vivado Hardware Manager to download the generated Bitstream file to your FPGA board.
 
 ## Usage
 
-If you are using `fpga_traffic_controller.v` as your top-level module, you will control the traffic light system using the physical switches and buttons on the Nexys A7 board. Consult the selected XDC file to understand the specific mapping of each switch and button to the system's control signals.
+If you are using `fpga_traffic_controller.v` as your top-level module, you will control the traffic light system using the physical switches and buttons on the FPGA board. Consult the selected XDC file to understand the specific mapping of each switch and button to the system's control signals.
 
-<img src="References/nexys-a7-board-product.avif" alt="Nexys A7 Board">
-
-* **Reset:** Mapped to a BCNU(M18) button. Toggle to change state.
-* **Start:** Mapped to a BCNC(N17) button. Toggle to change state.
-* **VIP Path Select:** Mapped to SW15 (North/South), SW14 (East/West)
-* **Traffic Camera Input:** Mapped to SW13 (North/South), SW12 (East/West)
-* **SPI Channel Select:** Mapped to SW2, SW1, SW0, selects light sensor to use.
+* **Reset:** Mapped to a designated button (e.g., BTNU). Toggle to change state.
+* **Start:** Mapped to a designated button (e.g., BTNC). Toggle to change state.
+* **VIP Path Select:** Mapped to user switches (e.g., SW15 for North/South, SW14 for East/West).
+* **Traffic Camera Input:** Mapped to user switches (e.g., SW13 for North/South, SW12 for East/West).
+* **SPI Channel Select:** Mapped to user switches (e.g., SW2, SW1, SW0), selects light sensor to use.
 
 If you are using `apb_traffic_controller.v`, you will control the system by reading from and writing to its internal registers via an APB master.
 
@@ -104,6 +104,5 @@ If you are using `apb_traffic_controller.v`, you will control the system by read
 Contributions to this project are welcome! If you have suggestions for improvements, bug fixes, or new features, please feel free to open an issue or submit a Pull Request.
 
 ## License
-
 
 See [LICENSE](LICENSE) for details
